@@ -1,0 +1,33 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gcpBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4285F4"/>
+      <stop offset="100%" style="stop-color:#2962FF"/>
+    </linearGradient>
+    <linearGradient id="gcpRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DB4437"/>
+      <stop offset="100%" style="stop-color:#C62828"/>
+    </linearGradient>
+    <linearGradient id="gcpYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4B400"/>
+      <stop offset="100%" style="stop-color:#F09300"/>
+    </linearGradient>
+    <linearGradient id="gcpGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F9D58"/>
+      <stop offset="100%" style="stop-color:#0B8043"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Hexagon Shape -->
+  <path d="M128 48 L208 88 L208 168 L128 208 L48 168 L48 88 Z" 
+        fill="white" stroke="#E0E0E0" stroke-width="4"/>
+  
+  <!-- Cloud Shape -->
+  <path d="M100 128 Q128 88 156 128 Q176 128 176 148 Q176 168 156 168 H100 Q80 168 80 148 Q80 128 100 128Z" 
+        fill="url(#gcpBlue)"/>
+  
+  <!-- Colored Dots -->
+  <circle cx="156" cy="128" r="12" fill="url(#gcpRed)"/>
+  <circle cx="100" cy="128" r="12" fill="url(#gcpYellow)"/>
+  <circle cx="128" cy="168" r="12" fill="url(#gcpGreen)"/>
+</svg>

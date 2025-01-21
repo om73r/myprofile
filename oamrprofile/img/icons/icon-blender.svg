@@ -1,0 +1,17 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="flutterGradient" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#42A5F5"/>
+      <stop offset="100%" style="stop-color:#2196F3"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Right wing -->
+  <path d="M50,128 L128,50 L206,50 L89,167 L50,128" fill="#42A5F5"/>
+  
+  <!-- Left wing -->
+  <path d="M89,167 L128,206 L206,206 L128,128 L89,167" fill="#0D47A1"/>
+  
+  <!-- Center overlap -->
+  <path d="M89,167 L128,128 L167,167 L128,206 L89,167" fill="#42A5F5"/>
+</svg>
