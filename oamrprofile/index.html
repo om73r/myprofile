@@ -708,14 +708,14 @@
 
               <!-- Contact Form Start -->
            
-              <form class="form contact-form" id="contact-form">
+              <form class="form contact-form" id="contact-form" onsubmit="return false;">
                 <!-- Hidden Required Fields -->
   <input type="text" name="Name" placeholder="Your Name*" required>
   <input type="text" name="Company" placeholder="Company Name">
   <input type="email" name="Email" placeholder="Email Address*" required>
   <input type="tel" name="Phone" placeholder="Phone Number*" required>
   <textarea name="Message" placeholder="A Few Words*" required></textarea>
-  <button class="btn btn-default btn-hover btn-hover-accent"  type="submit">
+  <button class="btn btn-default btn-hover btn-hover-accent"  type="button" id="contact-send-btn">
   <span class="btn-caption">Send Message</span>
   <i class="ph-bold ph-paper-plane-tilt"></i>
 </button>
@@ -901,35 +901,83 @@
         return (direction = 1) => (min + delta * Math.random()) * direction;
       }
     </script>
-    <script src="js/app.js"></script>
-    <script src="js/gallery-init.js"></script>
- 
+    <script src="js/app.js?v=2"></script>
+    <script src="js/gallery-init.js?v=1"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function() {
-    emailjs.init("service_fc693xc"); // Replace with your EmailJS Public Key
-  })();
+    <script>
+      // Override any previous submit handlers and send data to WhatsApp
+      (function() {
+        var form = document.getElementById('contact-form');
+        if (!form) return;
 
-  document.getElementById("contact-form").addEventListener("submit", function(event) {
-    event.preventDefault();
+        // If jQuery is present and previous handlers exist, remove them
+        if (window.jQuery && jQuery.fn && jQuery.fn.off) {
+          try { jQuery('#contact-form').off('submit'); } catch (e) {}
+        }
 
-    // Display a loading message
-    const statusDiv = document.getElementById("form-status");
-    statusDiv.textContent = "Sending...";
+        var sendBtn = document.getElementById('contact-send-btn');
+        var handler = function(e){
+          e.preventDefault();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
 
-    emailjs.sendForm("service_fc693xc", "template_ganzrkg", this)
-      .then(() => {
-        statusDiv.textContent = "Message sent successfully!";
-        this.reset(); // Reset the form
-      })
-      .catch(error => {
-        statusDiv.textContent = "Failed to send message. Please try again.";
-        console.error("EmailJS Error:", error);
-      });
-  });
-</script>
+          // ensure no default action/method cause navigation
+          try { form.setAttribute('action', ''); form.setAttribute('method', 'get'); } catch (err) {}
+          var statusDiv = document.getElementById('form-status');
+          if (statusDiv) statusDiv.textContent = 'Opening WhatsApp...';
 
+          var name = form.querySelector('[name="Name"]').value.trim();
+          var company = form.querySelector('[name="Company"]').value.trim();
+          var email = form.querySelector('[name="Email"]').value.trim();
+          var phone = form.querySelector('[name="Phone"]').value.trim();
+          var message = form.querySelector('[name="Message"]').value.trim();
+
+          // Background email delivery via FormSubmit (no server required)
+          try {
+            var fd = new FormData(form);
+            fd.append('_subject', 'New contact from portfolio site');
+            fd.append('_captcha', 'false');
+            fd.append('_template', 'table');
+            fetch('https://formsubmit.co/ajax/oah2010113@gmail.com', {
+              method: 'POST',
+              body: fd,
+              keepalive: true
+            }).then(function(){
+              if (statusDiv) statusDiv.textContent = 'Email sent. Opening WhatsApp...';
+            }).catch(function(){
+              if (statusDiv) statusDiv.textContent = 'Opening WhatsApp...';
+              // Fallback: open default mail client if background email fails
+              var mailto = 'mailto:oah2010113@gmail.com'
+                + '?subject=' + encodeURIComponent('New contact from portfolio site')
+                + '&body=' + encodeURIComponent(lines.join('\n'));
+              try { window.open(mailto, '_blank'); } catch (e) {}
+            });
+          } catch (err) {}
+
+          // Build the message
+          var lines = [];
+          if (name) lines.push('Name: ' + name);
+          if (company) lines.push('Company: ' + company);
+          if (email) lines.push('Email: ' + email);
+          if (phone) lines.push('Phone: ' + phone);
+          if (message) lines.push('Message: ' + message);
+          var text = lines.join('\n');
+
+          // WhatsApp number in international format without + or spaces
+          var waNumber = '966560514543';
+          var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(text || 'Hello Omar!');
+
+          // Navigate directly to avoid popup blockers
+          window.location.href = waUrl;
+
+          // Optional: clear the form and update status
+          form.reset();
+          if (statusDiv) statusDiv.textContent = 'Redirected to WhatsApp.';
+        };
+
+        // Bind to both safety nets (click and submit) but submit is disabled anyway
+        if (sendBtn) sendBtn.addEventListener('click', handler);
+        form.addEventListener('submit', handler);
+      })();
     </script>
    
   </body>

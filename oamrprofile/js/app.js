@@ -303,26 +303,13 @@ $(function() {
   // --------------------------------------------- //
 
   // --------------------------------------------- //
-  // Contact Form Start
+  // Contact Form (Disabled default AJAX to mail.php; handled in index.html)
   // --------------------------------------------- //
-  $("#contact-form").submit(function() { //Change
-		var th = $(this);
-		$.ajax({
-			type: "POST",
-			url: "mail.php", //Change
-			data: th.serialize()
-		}).done(function() {
-      $('.contact').find('.form').addClass('is-hidden');
-      $('.contact').find('.form__reply').addClass('is-visible');
-			setTimeout(function() {
-				// Done Functions
-        $('.contact').find('.form__reply').removeClass('is-visible');
-        $('.contact').find('.form').delay(300).removeClass('is-hidden');
-				th.trigger("reset");
-			}, 5000);
-		});
-		return false;
-	});
+  try {
+    if ($ && $.fn && $.fn.off) {
+      $("#contact-form").off('submit');
+    }
+  } catch (e) {}
   // --------------------------------------------- //
   // Contact Form End
   // --------------------------------------------- //
